@@ -1,0 +1,27 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /opt/student-app
+    overwrite: true
+
+permissions:
+  - object: /opt/student-app/scripts
+    pattern: "*.sh"
+    owner: root
+    group: root
+    mode: 755
+    type:
+      - file
+
+hooks:
+  BeforeInstall:
+    - location: scripts/stop_app.sh
+      timeout: 60
+      runas: root
+
+  ApplicationStart:
+    - location: scripts/start_app.sh
+      timeout: 600
+      runas: root
